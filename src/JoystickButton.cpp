@@ -1,9 +1,11 @@
 
+
+
 #include "JoystickButton.h"
 #include "Arduino.h"
 
 
-JoyButton::JoyButton(int VRX_PIN, int VRY_PIN, int SW_PIN, int NUM_ITEMS);
+JoyButton::JoyButton(int VRX_PIN, int VRY_PIN, int SW_PIN, int NUM_ITEMS)
 :  _button(SW_PIN)
 {
    _VRX_PIN = VRX_PIN;
@@ -27,16 +29,22 @@ void JoyButton::setup() {
  pinMode(_VRY_PIN, INPUT);
  pinMode(_SW_PIN, INPUT_PULLUP);
 
- _button.setDebounceTime(200);
+ _button.setDebounceTime(50);
 }
 
 void JoyButton::update() {
 _button.loop();
 
+
 int X = analogRead(_VRX_PIN);
 int Y = analogRead(_VRY_PIN);
 
-
+Serial.print("X=");
+Serial.println(X);
+Serial.print("Y=");
+Serial.println(Y);
+Serial.print("Button");
+Serial.println(digitalRead((_SW_PIN)));
 //select button logic
   if (_button.isPressed()) {
     if ((digitalRead(_SW_PIN) == LOW) && (_button_select_clicked == 0)) { // select button clicked, jump between screens
@@ -77,7 +85,7 @@ int Y = analogRead(_VRY_PIN);
         _item_selected = _item_selected - 1; // select previous item
       
         if (_item_selected < 0) { // if first item was selected, jump to last item
-          _item_selected = _NUM_ITEMS-1;
+          _item_selected = 0;
           delay(650);
           }
     break;
@@ -98,7 +106,7 @@ if ((_button_down_clicked == 1) && (Y<300)) {
         _item_selected = _item_selected + 1; // select next item
         _button_down_clicked = 1; // set button to clicked to only perform the action once
         if (_item_selected >= _NUM_ITEMS) { // last item was selected, jump to first menu item
-          _item_selected = 0;
+          _item_selected = _NUM_ITEMS-1;
     _button_up_clicked = 0;
 }
           delay(650);
