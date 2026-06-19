@@ -8,7 +8,7 @@
 class JoyButton
 {
   public:
-    JoyButton(int VRX_PIN, int VRY_PIN, int SW_PIN, int NUM_ITEMS)
+    JoyButton(int VRX_PIN, int VRY_PIN, int SW_PIN, int NUM_ITEMS);
     void  setup();
     void update();
     
